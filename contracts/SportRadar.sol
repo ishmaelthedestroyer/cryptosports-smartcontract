@@ -6,7 +6,7 @@ contract SportRadar {
   struct Bet {
     address creator;
     address challenger;
-    uint pool;
+    uint amount;
   }
 
   mapping (string => Bet) bets;
@@ -22,9 +22,15 @@ contract SportRadar {
       string betId,
       address creator,
       address challenger,
-      uint pool
-    ) public {
-    Bet memory bet = Bet(creator, challenger, pool);
+      uint amount
+    ) public returns (bool success) {
+    if (msg.sender != owner) {
+      return false;
+    }
+
+    Bet memory bet = Bet(creator, challenger, amount);
     bets[betId] = bet;
+
+    return true;
   }
 }
