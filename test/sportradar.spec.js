@@ -12,8 +12,8 @@ contract('SportRadar', function(accounts) {
   it("Should be able to create and add a bet", async () => {
     let
       sportradar = await SportRadar.deployed(),
-      betId = await sportradar.addBet.call('123', accounts[0], accounts[1], 100);
+      status = await sportradar.addBet.call('123', accounts[0], accounts[1], 100);
 
-    assert(betId.valueOf(), '123');
+    assert(status);
   });
 });
