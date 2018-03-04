@@ -23,10 +23,14 @@ contract SportRadar {
       address creator,
       address challenger,
       uint amount
-    ) public returns (string) {
+    ) public returns (bool success) {
+    if (msg.sender != owner) {
+      return false;
+    }
+
     Bet memory bet = Bet(creator, challenger, amount);
     bets[betId] = bet;
 
-    return betId;
+    return true;
   }
 }
