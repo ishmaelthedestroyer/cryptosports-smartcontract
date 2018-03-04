@@ -33,4 +33,21 @@ contract SportRadar {
 
     return true;
   }
+
+  function cancelBet(string betId) public returns (bool success) {
+    if (msg.sender != owner) {
+      return false;
+    }
+
+    Bet bet = bets[betId];
+    bet.creator.send(bet.amount / 2);
+    bet.challenger.send(bet.amount / 2);
+
+    Refund(creator, bet.amount / 2);
+    Refund(challenger, bet.amount / 2);
+    
+    delete bets[betId];
+
+    return true;
+  }
 }
