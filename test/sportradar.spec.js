@@ -9,11 +9,12 @@ contract('SportRadar', function(accounts) {
     assert.equal(owner.valueOf(), accounts[0]);
   });
 
-  it("Should be able to create and add a bet", async () => {
+  it("Should be able to create and accept a bet", async () => {
     let
       sportradar = await SportRadar.deployed(),
-      status = await sportradar.addBet.call('123', accounts[0], accounts[1], 100);
+      addStatus = await sportradar.addBet.call('123', accounts[0], 100),
+      acceptStatus = await sportradar.acceptBet.call('123', accounts[1], 100);;
 
-    assert(status);
+    assert(addStatus && acceptStatus);
   });
 });
