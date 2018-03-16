@@ -21,15 +21,29 @@ contract SportRadar {
   function addBet(
       string betId,
       address creator,
-      address challenger,
       uint amount
     ) public returns (bool success) {
     if (msg.sender != owner) {
       return false;
     }
 
-    Bet memory bet = Bet(creator, challenger, amount);
+    Bet memory bet = Bet(creator, 0, amount);
     bets[betId] = bet;
+
+    return true;
+  }
+
+  function acceptBet(
+    string betId,
+    address challenger,
+    uint amount
+  ) public returns (bool success) {
+    if (msg.sender != owner) {
+      return false;
+    }
+
+    bets[betId].challenger = challenger;
+    bets[betId].amount += amount;
 
     return true;
   }
@@ -39,12 +53,11 @@ contract SportRadar {
       return false;
     }
 
-    Bet bet = bets[betId];
-    bet.creator.send(bet.amount / 2);
-    bet.challenger.send(bet.amount / 2);
+    bets[betId].creator.transfer(bets[betId].amount / 2);
+    bets[betId].challenger.transfer(bets[betId].amount / 2);
 
-    Refund(creator, bet.amount / 2);
-    Refund(challenger, bet.amount / 2);
+    Refund(bets[betId].creator, bets[betId].amount / 2);
+    Refund(bets[betId].challenger, bets[betId].amount / 2);
     
     delete bets[betId];
 
