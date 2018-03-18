@@ -21,13 +21,16 @@ contract SportRadar {
   function addBet(
       string betId,
       address creator,
+      address challenger,
       uint amount
-    ) public returns (bool success) {
-    if (msg.sender != owner) {
+    ) public payable returns (bool success) {
+    if (msg.sender != creator) {
       return false;
     }
 
-    Bet memory bet = Bet(creator, 0, amount);
+    require(msg.value == amount);
+
+    Bet memory bet = Bet(creator, challenger, amount);
     bets[betId] = bet;
 
     return true;
@@ -38,11 +41,12 @@ contract SportRadar {
     address challenger,
     uint amount
   ) public returns (bool success) {
-    if (msg.sender != owner) {
+    if (msg.sender != challenger || bets[betId].challenger != challenger) {
       return false;
     }
 
-    bets[betId].challenger = challenger;
+    require(msg.value == amount);
+
     bets[betId].amount += amount;
 
     return true;
