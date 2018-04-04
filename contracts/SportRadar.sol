@@ -40,7 +40,7 @@ contract SportRadar {
     string betId,
     address challenger,
     uint amount
-  ) public returns (bool success) {
+  ) public payable returns (bool success) {
     if (msg.sender != challenger || bets[betId].challenger != challenger) {
       return false;
     }
