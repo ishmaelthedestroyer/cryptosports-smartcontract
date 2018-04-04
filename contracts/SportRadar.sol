@@ -52,6 +52,25 @@ contract SportRadar {
     return true;
   }
 
+  function disburseBet(
+    string betId,
+    address winner
+  ) public returns (bool success) {
+    if (msg.sender != owner) {
+      return false;
+    }
+
+    if (bets[betId].creator == winner) {
+      bets[betId].creator.transfer(bets[betId].amount);
+    } else if (bets[betId].challenger == winner) {
+      bets[betId].challenger.transfer(bets[betId].amount);
+    } else {
+      return false;
+    }
+
+    return true;
+  }
+
   function cancelBet(string betId) public returns (bool success) {
     if (msg.sender != owner) {
       return false;
