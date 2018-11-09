@@ -16,6 +16,7 @@ contract NoBookie {
 
   event Deposit(address _from, uint _amount);
   event Refund(address _to, uint _amount);
+  event Disburse(address _to, uint amount, uint fee);
 
   constructor() public {
     owner = msg.sender;
@@ -63,8 +64,10 @@ contract NoBookie {
     if (bets[betId].creator == winner) {
       bets[betId].creator.transfer(bets[betId].amount - fee);
       msg.sender.transfer(fee);
+      emit Disburse(bets[betId].creator, bets[betId].amount - fee, fee);
     } else if (bets[betId].challenger == winner) {
       bets[betId].challenger.transfer(bets[betId].amount - fee);
+      emit Disburse(bets[betId].challenger, bets[betId].amount - fee, fee);
       msg.sender.transfer(fee);
     } else {
       return false;

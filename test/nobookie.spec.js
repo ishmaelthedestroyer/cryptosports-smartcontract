@@ -40,7 +40,25 @@ contract('NoBookie', function(accounts) {
         from: accounts[2],
         value
       }),
-      disburseStatus = await nobookie.disburseBet.call('123', accounts[2], fee, {
+      disburseStatus = await nobookie.disburseBet.call('123', accounts[2], {
+        from: accounts[0],
+      });
+
+    assert(addStatus && acceptStatus && disburseStatus);
+  });
+
+  it("Should be able to disburse winnings minus fee", async () => {
+    let
+      nobookie = await NoBookie.deployed(),
+      addStatus = await nobookie.addBet('456', {
+        from: accounts[1],
+        value
+      }),
+      acceptStatus = await nobookie.acceptBet('456', {
+        from: accounts[2],
+        value
+      }),
+      disburseStatus = await nobookie.disburseBetMinusFee.call('123', accounts[2], fee, {
         from: accounts[0],
       });
 
