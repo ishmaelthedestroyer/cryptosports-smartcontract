@@ -1,7 +1,7 @@
-const Migrations = artifacts.require('./Migrations.sol'),
-  SportRadar = artifacts.require('./SportRadar.sol');
+const Migrations = artifacts.require('./Migrations.sol');
+const NoBookie = artifacts.require('./NoBookie.sol');
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
-  deployer.deploy(SportRadar);
+  deployer.deploy(NoBookie);
 };
